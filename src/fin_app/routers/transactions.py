@@ -6,6 +6,15 @@ transaction_router = APIRouter()
 
 @transaction_router.post("/transaction")
 def add_transaction(user_id: int, amount: float, category: str, description: str):
+    """
+    **Adds a new transaction.**
+
+    **Categories:**
+    - Food
+    - Transport
+    - Entertainment
+    - Other
+    """
     with DBManager() as db:
         transaction = db.add_transaction(user_id, amount, category, description)
     return transaction
@@ -31,6 +40,15 @@ def list_transactions():
 def update_transaction(
     transaction_id: int, user_id: int, amount: float, category: str, description: str
 ):
+    """
+    **Updates an existing transaction.**
+
+    **Categories:**
+    - Food
+    - Transport
+    - Entertainment
+    - Other
+    """
     with DBManager() as db:
         transaction = db.update_transaction(
             transaction_id, user_id, amount, category, description
