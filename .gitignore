@@ -7,6 +7,7 @@ __pycache__/
 .env
 .venv
 *.md
+*.json
 
 # database files
 db.sqlite3
