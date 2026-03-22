@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if object %}Edit Order{% else %}Create Order{% endif %}</title>
+</head>
+<body>
+    <h1>{% if object %}Edit Order{% else %}Create Order{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <hr>
+    <a href="{% url 'order_list' %}">Cancel</a>
+</body>
+</html>

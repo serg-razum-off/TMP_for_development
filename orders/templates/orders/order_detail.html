@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Details</title>
+</head>
+<body>
+    <h1>Order: {{ order.title }}</h1>
+    <p><strong>User:</strong> {{ order.user.username }}</p>
+    <p><strong>Amount:</strong> {{ order.amount }}$</p>
+    <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+    <p><strong>Active:</strong> {{ order.is_active|yesno:"Yes,No" }}</p>
+    <p><strong>Created at:</strong> {{ order.created_at }}</p>
+    <p><strong>Updated at:</strong> {{ order.updated_at }}</p>
+    
+    <hr>
+    <a href="{% url 'order_update' order.pk %}">Edit</a> | 
+    <a href="{% url 'order_delete' order.pk %}">Delete</a> | 
+    <a href="{% url 'order_list' %}">Back to List</a>
+</body>
+</html>

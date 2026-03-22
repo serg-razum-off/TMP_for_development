@@ -31,10 +31,8 @@ class RequestTelemetryMiddleware:
     def __call__(self, request: HttpRequest) -> HttpResponse:
         """
         Main logic executed for each request.
-
         Args:
             request: The incoming Django HttpRequest object.
-
         Returns:
             The resulting HttpResponse object with telemetry headers.
         """
