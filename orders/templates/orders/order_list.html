@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Orders</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Orders List - Umbrella Corp{% endblock %}
+
+{% block content %}
     <h1>Orders</h1>
     
-    <div>
-        <a href="{% url 'order_create' %}">Create New Order</a>
-    </div>
-
     <form method="get" style="margin: 20px 0;">
         <label for="start_date">Start Date:</label>
         <input type="date" name="start_date" id="start_date" value="{{ request.GET.start_date }}">
@@ -34,5 +29,4 @@
             <li>No orders found.</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

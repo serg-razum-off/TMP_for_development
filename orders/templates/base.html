@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Umbrella Corp - Order Management{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+        .logo {
+            height: 60px;
+            width: auto;
+        }
+        .tagline {
+            font-family: "Courier New", Courier, monospace;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'order_list' %}">
+            <img src="{% static 'orders/images/Umbrella1.jpg' %}" alt="Umbrella Corp Logo" class="logo">
+        </a>
+        <div class="tagline">...we've got you covered</div>
+    </header>
+
+    <nav>
+        <a href="{% url 'order_list' %}">Orders List</a>
+        <a href="{% url 'order_create' %}">Create New Order</a>
+    </nav>
+
+    <hr>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

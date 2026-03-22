@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Delete Order</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Delete Order - Umbrella Corp{% endblock %}
+
+{% block content %}
     <h1>Delete Order</h1>
     <p>Are you sure you want to delete order "{{ object.title }}"?</p>
     <form method="post">
@@ -12,5 +11,4 @@
     </form>
     <hr>
     <a href="{% url 'order_detail' object.pk %}">Cancel</a>
-</body>
-</html>
+{% endblock %}

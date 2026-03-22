@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Order Details</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Order Details - {{ order.title }} - Umbrella Corp{% endblock %}
+
+{% block content %}
     <h1>Order: {{ order.title }}</h1>
     <p><strong>User:</strong> {{ order.user.username }}</p>
     <p><strong>Amount:</strong> {{ order.amount }}$</p>
@@ -16,5 +15,4 @@
     <a href="{% url 'order_update' order.pk %}">Edit</a> | 
     <a href="{% url 'order_delete' order.pk %}">Delete</a> | 
     <a href="{% url 'order_list' %}">Back to List</a>
-</body>
-</html>
+{% endblock %}
