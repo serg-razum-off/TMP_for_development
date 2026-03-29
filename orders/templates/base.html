@@ -45,10 +45,12 @@
         <a href="{% url 'order_list' %}">
             <img src="{% static 'orders/images/Umbrella1.jpg' %}" alt="Umbrella Corp Logo" class="logo">
         </a>
-        <div class="tagline">
-            <img src="{% static 'orders/images/Umbrella Support.png' %}" alt="Umbrella Support" style="height: 5rem; vertical-align: middle;">
-            ...we've got you covered
-        </div>
+        <a href="{% url 'support' %}" style="text-decoration: none; color: inherit;">
+            <div class="tagline">
+                <img src="{% static 'orders/images/Umbrella Support.png' %}" alt="Umbrella Support" style="height: 5rem; vertical-align: middle;">
+                ...we've got you covered
+            </div>
+        </a>
     </header>
 
     <nav>

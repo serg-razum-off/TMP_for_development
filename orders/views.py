@@ -4,8 +4,8 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    TemplateView,
 )
-from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django.urls import reverse_lazy
 from .models import Order
@@ -54,3 +54,7 @@ class OrderDeleteView(DeleteView):
     model = Order
     template_name = "orders/order_confirm_delete.html"
     success_url = reverse_lazy("order_list")
+
+
+class SupportView(TemplateView):
+    template_name = "orders/support.html"
