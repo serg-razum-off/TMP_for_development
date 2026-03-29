@@ -58,3 +58,7 @@ class OrderDeleteView(DeleteView):
 
 class SupportView(TemplateView):
     template_name = "orders/support.html"
+
+
+class AboutUsView(TemplateView):
+    template_name = "orders/about_us.html"
