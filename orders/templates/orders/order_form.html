@@ -42,7 +42,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{% if object %}Edit Order{% else %}Create Order{% endif %}</h1>
+    <h1 style="color: #f7f7f7ff;font-size: 3rem;">{% if object %}Edit Order{% else %}Create Order{% endif %}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

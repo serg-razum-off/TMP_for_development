@@ -49,7 +49,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Orders</h1>
+    <h1 style="color: #ebeff1ff;font-size: 3rem;">Orders</h1>
     
     <form method="get" style="margin: 20px 0;">
         <label for="start_date">Start Date:</label>
@@ -67,6 +67,9 @@
         {% for order in orders %}
             <li>
                 <strong>{{ order.title }}</strong> - {{ order.amount }}$ - User: {{ order.user.username }}
+                <div style="font-size: 0.85rem; color: #304a54ff; margin: 5px 0;">
+                    Created: {{ order.created_at|date:"Y-m-d H:i" }} | Updated: {{ order.updated_at|date:"Y-m-d H:i" }}
+                </div>
                 (<a href="{% url 'order_detail' order.pk %}">View</a> | 
                  <a href="{% url 'order_update' order.pk %}">Edit</a> | 
                  <a href="{% url 'order_delete' order.pk %}">Delete</a>)
