@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Delete Message - Umbrella Corp{% endblock %}
+
+{% block body_class %}message-delete-page blurred-bg-page{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 class="page-title-giant title-danger">Delete Message</h1>
+        <div class="header-actions">
+            <a href="{% url 'message_list' %}" class="btn btn-sm btn-secondary">Cancel</a>
+        </div>
+    </div>
+    <hr class="header-separator header-separator-bold separator-orange">
+    
+    <div class="content-card">
+        <p>Are you sure you want to delete this message?</p>
+        <div class="alert alert-warning">
+            <strong>Message Date:</strong> {{ object.created_at|date:"Y-m-d H:i" }}<br>
+            <strong>Content:</strong> {{ object.message_body|truncatechars:100 }}
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="btn-group">
+                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

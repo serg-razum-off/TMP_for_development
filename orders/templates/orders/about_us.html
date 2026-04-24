@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us - Umbrella Corp{% endblock %}
+
+{% block body_class %}about-us-page blurred-bg-page{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2 class="page-title-giant">
+                <img src="{% static 'images/Umbrella2.jpg' %}" alt="Umbrella Corp Logo" class="logo"> About Us...</h2>
+    </div>
+    <hr class="header-separator header-separator-bold separator-light">
+    
+    <section>
+        <h2 class="section-title">Our Vision</h2>
+        <p class="content-text content-card">To lead the world into a new era of biological and technological advancement, ensuring a safer and healthier future for all humanity through relentless innovation and scientific excellence.</p>
+    </section>
+
+    <section>
+        <h2 class="section-title">Our Mission</h2>
+        <p class="content-text content-card">Umbrella Corporation is dedicated to the development of life-saving medicines, cutting-edge medical hardware, and global infrastructure solutions. Our mission is to "Protect the Future" by providing superior products that improve the quality of life on a global scale.</p>
+    </section>
+
+    <div class="footer-quote-container">
+        <hr class="footer-quote-hr">
+        <p class="footer-quote-text">"Helping you build a better tomorrow."</p>
+    </div>
+{% endblock %}

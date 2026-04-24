@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Orders List - Umbrella Corp{% endblock %}
+
+{% block body_class %}order-list-page blurred-bg-page{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2 class="page-title-giant">Orders</h2>
+        
+        <form method="get" class="header-actions">
+            <label for="start_date" class="header-form-label">
+                Start Date:
+            </label>
+            <input type="date" name="start_date" id="start_date" value="{{ request.GET.start_date }}">
+            
+            <label for="start_date" class="header-form-label">
+                End Date:
+            </label>
+            <input type="date" name="end_date" id="end_date" value="{{ request.GET.end_date }}">
+            
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{% url 'order_list' %}" class="btn btn-secondary">Clear</a>
+        </form>
+    </div>
+
+    <hr class="header-separator header-separator-bold order-list-separator">
+
+    <p><b>List of orders:</b></p>
+    <ul>
+        {% for order in orders %}
+            <li class="content-card order-list-item">
+                <span class="status-pill status-{{ order.status }}">{{ order.get_status_display }}</span>
+
+                <div class="order-item-details">
+                    
+                    <p class="order-info">
+                        <strong>{{ order.title }}</strong> - {{ order.amount }}$ - User: {{ order.user.username }} | Created: {{ order.created_at|date:"Y-m-d H:i" }} | Updated: {{ order.updated_at|date:"Y-m-d H:i" }}
+                    </p>
+                    
+                    {% if order.comment %}
+                        <p class="order-comment text-muted" style="margin-bottom: 8px;">
+                            <small><i>Note: {{ order.comment }}</i></small>
+                        </p>
+                    {% endif %}
+
+                    <div class="btn-group">
+                        <a href="{% url 'order_detail' order.pk %}" class="btn btn-sm btn-primary">View</a>
+                        <a href="{% url 'order_update' order.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+                        <a href="{% url 'order_delete' order.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </div>
+                </div>
+            </li>
+        {% empty %}
+            <li>No orders found.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

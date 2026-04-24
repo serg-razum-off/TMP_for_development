@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Umbrella Corp - Order Management{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <div class="header-wrapper">
+        <header>
+            <a href="{% url 'about_us' %}">
+                <img src="{% static 'images/Umbrella1.jpg' %}" alt="Umbrella Corp Logo" class="logo">
+            </a>
+            
+            <nav>
+                <a href="{% url 'order_list' %}">Orders</a>
+                <a href="{% url 'order_create' %}">Create</a>
+                <a href="{% url 'support' %}">Support</a>
+                
+                <div class="user-auth-nav" style="margin-left: 20px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 20px; display: flex; align-items: center; gap: 15px;">
+                    {% if user.is_authenticated %}
+                        <span class="user-welcome">Hi, <strong>{{ user.username }}</strong></span>
+                        <a href="{% url 'message_list' %}" class="btn btn-sm btn-link" style="color: inherit; text-decoration: none;">
+                            Messages 
+                            {% if unread_messages_count > 0 %}
+                                <span class="badge">{{ unread_messages_count }}</span>
+                            {% endif %}
+                        </a>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-secondary">Logout</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-sm btn-primary">Login</a>
+                    {% endif %}
+                </div>
+            </nav>
+
+            <a href="{% url 'support' %}" class="tagline-link">
+                <div class="tagline">
+                    <img src="{% static 'images/Umbrella Support.png' %}" alt="Umbrella Support">
+                    ...we've got you covered
+                </div>
+            </a>
+        </header>
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2026 Umbrella Corporation. All rights reserved. <em>Helping you build a better tomorrow.</em></p>
+    </footer>
+</body>
+</html>

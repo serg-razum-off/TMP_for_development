@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Delete Order - Umbrella Corp{% endblock %}
+
+{% block body_class %}order-delete-page blurred-bg-page{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 class="page-title-giant title-danger">Delete Order</h1>
+        <div class="header-actions">
+            <a href="{% url 'order_detail' object.pk %}" class="btn btn-sm btn-secondary">Cancel</a>
+        </div>
+    </div>
+    <hr class="header-separator header-separator-bold separator-orange">
+    <p>Are you sure you want to delete order "{{ object.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="btn-group">
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        </div>
+    </form>
+{% endblock %}

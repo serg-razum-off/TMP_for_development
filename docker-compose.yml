@@ -1,0 +1,60 @@
+services:
+  web:
+    build: .
+    container_name: django_app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+    stdin_open: true
+    tty: true
+
+  streaming_api:
+    build:
+      context: .
+      dockerfile: orders/streaming/Dockerfile
+    container_name: streaming_api
+    volumes:
+      - ./orders/streaming:/app
+    ports:
+      - "8002:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    command: celery -A myproject worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - web
+
+  celery_beat:
+    build: .
+    container_name: celery_beat
+    command: celery -A myproject beat --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - web

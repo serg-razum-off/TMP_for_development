@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Messages - Umbrella Corp{% endblock %}
+
+{% block body_class %}message-list-page blurred-bg-page{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2 class="page-title-giant">Notifications</h2>
+    </div>
+
+    <hr class="header-separator header-separator-bold">
+
+    <p><b>Your recent messages:</b></p>
+    <ul>
+        {% for msg in user_messages %}
+            <li class="content-card {% if not msg.is_read %}unread-message{% endif %}">
+                <div class="message-item-details">
+                    <p class="message-info">
+                        <strong>{{ msg.created_at|date:"Y-m-d H:i" }}</strong>
+                        {% if msg.order %}
+                            - Related to Order: <a href="{% url 'order_detail' msg.order.pk %}" style="color: var(--accent-color);">{{ msg.order.title }}</a>
+                        {% endif %}
+                    </p>
+                    <p class="message-body">{{ msg.message_body }}</p>
+                    
+                    <div class="btn-group" style="margin-top: 10px;">
+                        {% if not msg.is_read %}
+                            <form action="{% url 'message_read' msg.pk %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-primary">Mark as Read</button>
+                            </form>
+                        {% else %}
+                            <span class="status-pill status-completed">Read</span>
+                        {% endif %}
+                        <a href="{% url 'message_delete' msg.pk %}" class="btn btn-sm btn-danger" style="margin-left: 5px;">Delete</a>
+                    </div>
+                </div>
+            </li>
+        {% empty %}
+            <li>No notifications found.</li>
+        {% endfor %}
+    </ul>
+
+    <style>
+        .unread-message {
+            border-left: 4px solid var(--accent-color);
+        }
+        .message-body {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+    </style>
+{% endblock %}

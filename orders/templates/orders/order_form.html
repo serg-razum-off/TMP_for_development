@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if object %}Edit Order{% else %}Create Order{% endif %} - Umbrella Corp{% endblock %}
+
+{% block body_class %}order-form-page blurred-bg-page{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2 class="page-title-giant">{% if object %}Edit Order{% else %}Create Order{% endif %}</h2>
+        <div class="header-actions">
+            <a href="{% url 'order_list' %}" class="btn btn-sm btn-secondary">Cancel</a>
+        </div>
+    </div>
+    <hr class="header-separator">
+    <form method="post" class="content-card">
+        {% csrf_token %}
+        <div class="mb-3">
+            <strong>Current Order Total:</strong> 
+            <span class="badge bg-success" style="font-size: 1.1rem;">
+                {% if object %}{{ object.amount }}{% else %}0.00{% endif %}$
+            </span>
+            <small class="text-muted d-block mt-1">(Recalculated upon saving)</small>
+        </div>
+        {{ form.as_p }}
+
+        <h3 class="mt-4">Order Items</h3>
+        <hr>
+        <div id="order-items-wrapper">
+            {{ items.management_form }}
+            <table class="table" id="order-items-table">
+                <thead>
+                    <tr>
+                        <th>Inventory Item</th>
+                        <th>Quantity</th>
+                        {% if items.can_delete %}
+                            <th>Delete?</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody id="formset-body">
+                    {% for item_form in items %}
+                        <tr class="item-form-row">
+                            <td>
+                                {{ item_form.id }}
+                                {{ item_form.inventory }}
+                                {{ item_form.inventory.errors }}
+                            </td>
+                            <td>
+                                {{ item_form.quantity }}
+                                {{ item_form.quantity.errors }}
+                            </td>
+                            {% if items.can_delete %}
+                                <td>{{ item_form.DELETE }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <button type="button" class="btn btn-sm btn-info mb-3" id="add-item-btn">+ Add Item</button>
+
+        <div class="btn-group mt-3 d-block">
+            <button type="submit" class="btn btn-primary">Save Order</button>
+        </div>
+    </form>
+
+    {# Empty form for cloning #}
+    <template id="empty-form-template">
+        <tr class="item-form-row">
+            <td>
+                {{ items.empty_form.id }}
+                {{ items.empty_form.inventory }}
+            </td>
+            <td>
+                {{ items.empty_form.quantity }}
+            </td>
+            {% if items.can_delete %}
+                <td>{{ items.empty_form.DELETE }}</td>
+            {% endif %}
+        </tr>
+    </template>
+
+    {{ product_prices|json_script:"product-prices-data" }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productPrices = JSON.parse(document.getElementById('product-prices-data').textContent);
+            const formsetBody = document.getElementById('formset-body');
+            const addItemBtn = document.getElementById('add-item-btn');
+            const totalForms = document.getElementById('id_items-TOTAL_FORMS');
+            const totalDisplay = document.querySelector('.badge.bg-success');
+            const emptyFormTemplate = document.getElementById('empty-form-template');
+
+            function calculateTotal() {
+                let total = 0;
+                const rows = document.querySelectorAll('.item-form-row');
+                
+                rows.forEach(row => {
+                    const inventorySelect = row.querySelector('select[name$="-inventory"]');
+                    const quantityInput = row.querySelector('input[name$="-quantity"]');
+                    const deleteCheckbox = row.querySelector('input[name$="-DELETE"]');
+
+                    if (deleteCheckbox && deleteCheckbox.checked) return;
+
+                    if (inventorySelect && quantityInput) {
+                        const productId = inventorySelect.value;
+                        const quantity = parseFloat(quantityInput.value) || 0;
+                        const price = productPrices[productId] || 0;
+                        total += price * quantity;
+                    }
+                });
+                totalDisplay.textContent = total.toFixed(2) + '$';
+            }
+
+            // Event delegation for changes in the formset
+            formsetBody.addEventListener('change', calculateTotal);
+            formsetBody.addEventListener('input', calculateTotal);
+
+            addItemBtn.addEventListener('click', function() {
+                const currentFormCount = parseInt(totalForms.value);
+                const newFormHtml = emptyFormTemplate.innerHTML.replace(/__prefix__/g, currentFormCount);
+                
+                // Construct temporary wrapper to parse HTML string
+                const tr = document.createElement('tr');
+                tr.className = 'item-form-row';
+                tr.innerHTML = newFormHtml;
+                
+                formsetBody.appendChild(tr);
+                
+                totalForms.value = currentFormCount + 1;
+                calculateTotal();
+            });
+
+            // Initial calculation
+            calculateTotal();
+        });
+    </script>
+{% endblock %}

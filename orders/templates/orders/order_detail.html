@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Details - {{ order.title }} - Umbrella Corp{% endblock %}
+
+{% block body_class %}order-detail-page blurred-bg-page{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 class="page-title-giant">Order: {{ order.title }}</h1>
+        <div class="header-actions">
+            <a href="{% url 'order_update' order.pk %}" class="btn btn-sm btn-primary">Edit</a>
+            <a href="{% url 'order_delete' order.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            <a href="{% url 'order_list' %}" class="btn btn-sm btn-secondary">Back to List</a>
+        </div>
+    </div>
+    <hr class="header-separator header-separator-bold separator-blue">
+    <div class="content-card">
+        <p><strong>User:</strong> {{ order.user.username }}</p>
+        <p><strong>Total Amount:</strong> {{ order.amount }}$</p>
+        <p><strong>Status:</strong> <span class="badge status-{{ order.status }}">{{ order.get_status_display }}</span></p>
+        <p><strong>Active:</strong> {{ order.is_active|yesno:"Yes,No" }}</p>
+        <p><strong>Created at:</strong> {{ order.created_at }}</p>
+        <p><strong>Updated at:</strong> {{ order.updated_at }}</p>
+        {% if order.comment %}
+            <p><strong>Note:</strong> {{ order.comment }}</p>
+        {% endif %}
+    </div>
+
+    <div class="page-header mt-4">
+        <h2 class="page-title">Order Items</h2>
+    </div>
+    <hr class="header-separator">
+    <div class="content-card">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Line Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.inventory.name }}</td>
+                    <td>{{ item.inventory.price }}$</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.line_total }}$</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No items in this order.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
