@@ -1,0 +1,35 @@
+{
+    "track_id": "track-05-mobile-order-sync",
+    "tasks": [
+        {
+            "id": 1,
+            "task": "Install and configure Celery in Django project",
+            "status": "pending",
+            "file_targets": ["requirements.txt", "settings.py"]
+        },
+        {
+            "id": 2,
+            "task": "Create Celery task to monitor stream_orders.jsonl",
+            "status": "pending",
+            "file_targets": ["tasks.py"]
+        },
+        {
+            "id": 3,
+            "task": "Implement Django user lookup endpoint",
+            "status": "pending",
+            "file_targets": ["views.py", "urls.py"]
+        },
+        {
+            "id": 4,
+            "task": "Create Order creation endpoint from streaming JSONL",
+            "status": "pending",
+            "file_targets": ["views.py", "urls.py"]
+        },
+        {
+            "id": 5,
+            "task": "Implement UserMessage creation for failed orders",
+            "status": "pending",
+            "file_targets": ["tasks.py", "models.py"]
+        }
+    ]
+}

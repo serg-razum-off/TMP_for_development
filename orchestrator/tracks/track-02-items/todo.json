@@ -1,0 +1,77 @@
+{
+    "track_id": "track-02-items",
+    "tasks": [
+        {
+            "id": 1,
+            "task": "Define Inventory and OrderItem models in orders/models.py",
+            "status": "completed",
+            "file_targets": [
+                "orders/models.py"
+            ]
+        },
+        {
+            "id": 2,
+            "task": "Generate and apply database migrations for new models",
+            "status": "completed",
+            "file_targets": [
+                "orders/migrations/"
+            ]
+        },
+        {
+            "id": 3,
+            "task": "Register Inventory and OrderItem models in admin.py",
+            "status": "completed",
+            "file_targets": [
+                "orders/admin.py"
+            ]
+        },
+        {
+            "id": 4,
+            "task": "Create inline formset for OrderItem in orders/forms.py",
+            "status": "completed",
+            "file_targets": [
+                "orders/forms.py"
+            ]
+        },
+        {
+            "id": 5,
+            "task": "Update views to handle inline formset and prefetch_related for items__inventory",
+            "status": "completed",
+            "file_targets": [
+                "orders/views.py"
+            ]
+        },
+        {
+            "id": 6,
+            "task": "Update order_detail.html template to display inventory items list",
+            "status": "completed",
+            "file_targets": [
+                "orders/templates/orders/order_detail.html"
+            ]
+        },
+        {
+            "id": 7,
+            "task": "Update order_form.html to render standard Django MVT formsets",
+            "status": "completed",
+            "file_targets": [
+                "orders/templates/orders/order_form.html"
+            ]
+        },
+        {
+            "id": 8,
+            "task": "Write tests for Inventory/OrderItem models and relationship integrity",
+            "status": "completed",
+            "file_targets": [
+                "orders/tests.py"
+            ]
+        },
+        {
+            "id": 9,
+            "task": "Write tests for views functionality and N+1 query optimisations",
+            "status": "completed",
+            "file_targets": [
+                "orders/tests.py"
+            ]
+        }
+    ]
+}

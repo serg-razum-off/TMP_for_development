@@ -1,0 +1,40 @@
+{
+  "track_id": "track-06-stabilization",
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Move streaming server from orders/streaming to /streaming_server",
+      "status": "pending",
+      "file_targets": [
+        "orders/streaming/",
+        "streaming_server/"
+      ]
+    },
+    {
+      "id": 2,
+      "task": "Move Celery beat schedule from orders/apps.py to global configuration",
+      "status": "pending",
+      "file_targets": [
+        "orders/apps.py",
+        "myproject/celery.py",
+        "myproject/settings.py"
+      ]
+    },
+    {
+      "id": 3,
+      "task": "Optimize process_mobile_orders memory usage by reading jsonl line by line",
+      "status": "pending",
+      "file_targets": [
+        "orders/tasks.py"
+      ]
+    },
+    {
+      "id": 4,
+      "task": "Replace naive datetime.now() with aware datetime.now(timezone.utc)",
+      "status": "pending",
+      "file_targets": [
+        "orders/tasks.py"
+      ]
+    }
+  ]
+}

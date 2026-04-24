@@ -1,0 +1,71 @@
+{
+    "track_id": "track-03-messages",
+    "tasks": [
+        {
+            "id": 1,
+            "task": "Define UserMessage model and update Order with created_by field and creation notification logic",
+            "status": "completed",
+            "file_targets": [
+                "orders/models.py"
+            ]
+        },
+        {
+            "id": 2,
+            "task": "Generate and apply database migrations for UserMessage",
+            "status": "completed",
+            "file_targets": [
+                "orders/migrations/"
+            ]
+        },
+        {
+            "id": 3,
+            "task": "Register UserMessage in admin.py",
+            "status": "completed",
+            "file_targets": [
+                "orders/admin.py"
+            ]
+        },
+        {
+            "id": 4,
+            "task": "Implement Order status change detection (e.g. override save() or use signals) to create UserMessage",
+            "status": "completed",
+            "file_targets": [
+                "orders/models.py"
+            ]
+        },
+        {
+            "id": 5,
+            "task": "Create MessageListView to display user messages",
+            "status": "completed",
+            "file_targets": [
+                "orders/views.py"
+            ]
+        },
+        {
+            "id": 6,
+            "task": "Create message list template (message_list.html) and Mark-as-Read action button",
+            "status": "completed",
+            "file_targets": [
+                "orders/templates/orders/message_list.html",
+                "orders/views.py",
+                "myproject/urls.py"
+            ]
+        },
+        {
+            "id": 7,
+            "task": "Add link to message list and unread count in base.html",
+            "status": "completed",
+            "file_targets": [
+                "orders/templates/orders/base.html"
+            ]
+        },
+        {
+            "id": 8,
+            "task": "Write tests for UserMessage creation, logic, and view access",
+            "status": "completed",
+            "file_targets": [
+                "orders/tests.py"
+            ]
+        }
+    ]
+}

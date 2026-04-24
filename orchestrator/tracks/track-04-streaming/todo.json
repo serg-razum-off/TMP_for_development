@@ -1,0 +1,41 @@
+{
+    "track_id": "track-04-streaming",
+    "tasks": [
+        {
+            "id": 1,
+            "task": "Create requirements.txt for FastAPI service",
+            "status": "completed",
+            "file_targets": ["orders/streaming/requirements.txt"]
+        },
+        {
+            "id": 2,
+            "task": "Define Pydantic schema for order draft",
+            "status": "completed",
+            "file_targets": ["orders/streaming/schemas.py"]
+        },
+        {
+            "id": 3,
+            "task": "Implement FastAPI main.py with create_order endpoint",
+            "status": "completed",
+            "file_targets": ["orders/streaming/main.py"]
+        },
+        {
+            "id": 4,
+            "task": "Create Dockerfile for FastAPI service",
+            "status": "completed",
+            "file_targets": ["orders/streaming/Dockerfile"]
+        },
+        {
+            "id": 5,
+            "task": "Update docker-compose.yml to include streaming_api service",
+            "status": "completed",
+            "file_targets": ["docker-compose.yml"]
+        },
+        {
+            "id": 6,
+            "task": "Verify FastAPI service receives and stores orders in JSONL format",
+            "status": "completed",
+            "file_targets": ["orders/streaming/stream_orders.jsonl"]
+        }
+    ]
+}
