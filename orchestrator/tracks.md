@@ -32,7 +32,15 @@
 
 ---
 
+## Phase 3 Epics — Stabilization and Refactoring
+
+| # | Track ID | Epic Name | Status |
+|---|----------|-----------|--------|
+| 6 | `track-06-stabilization` | Project Stabilization and Best Practices | `[~]` |
+
+---
+
 ## Active Track
 
-> **Currently active:** None
-> **Next Steps:** Identify and prioritize new project enhancements
+> **Currently active:** `track-06-stabilization`
+> **Next Steps:** Follow `todo.json` in `track-06-stabilization`
