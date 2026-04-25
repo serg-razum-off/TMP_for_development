@@ -45,6 +45,90 @@
         "streaming_server/main.py",
         "orders/tasks.py"
       ]
+    },
+    {
+      "id": 6,
+      "task": "R-01: Fix temp file write logic in process_mobile_orders — write errored records back to temp file so they are retried on the next beat cycle (Option A: clear on success, keep failures for retry)",
+      "status": "pending",
+      "file_targets": [
+        "orders/tasks.py"
+      ]
+    },
+    {
+      "id": 7,
+      "task": "R-02: Fix wrong field names in UserMessage.objects.create inside tasks.py — replace message= with message_body= and remove non-existent is_error= argument; add is_error BooleanField to UserMessage model if the flag is required",
+      "status": "pending",
+      "file_targets": [
+        "orders/tasks.py",
+        "orders/models.py"
+      ]
+    },
+    {
+      "id": 8,
+      "task": "R-03: Replace fragile 'record' in locals() guard in tasks.py error handler — split except clause into separate json.JSONDecodeError and (KeyError, ValidationError) branches",
+      "status": "pending",
+      "file_targets": [
+        "orders/tasks.py"
+      ]
+    },
+    {
+      "id": 9,
+      "task": "R-04: Replace naive datetime.now() with datetime.now(timezone.utc) in streaming_server/main.py to match Django UTC-aware timestamps",
+      "status": "pending",
+      "file_targets": [
+        "streaming_server/main.py"
+      ]
+    },
+    {
+      "id": 10,
+      "task": "R-05: Replace bare except Exception in streaming_server/main.py with specific OSError handling and proper logger.error() call; let unexpected exceptions propagate for full tracebacks",
+      "status": "pending",
+      "file_targets": [
+        "streaming_server/main.py"
+      ]
+    },
+    {
+      "id": 11,
+      "task": "R-06: Extract duplicated _get_product_prices_data method from OrderCreateView and OrderUpdateView into a shared OrderPriceMixin or module-level helper function",
+      "status": "pending",
+      "file_targets": [
+        "orders/views.py"
+      ]
+    },
+    {
+      "id": 12,
+      "task": "R-07: Delete dead SimpleLoggingMiddleware class from orders/middleware.py — it is never registered and fully superseded by RequestTelemetryMiddleware",
+      "status": "pending",
+      "file_targets": [
+        "orders/middleware.py"
+      ]
+    },
+    {
+      "id": 13,
+      "task": "R-08: Replace print() with logger.info() in RequestTelemetryMiddleware.__call__; add orders.middleware logger to LOGGING in settings.py",
+      "status": "pending",
+      "file_targets": [
+        "orders/middleware.py",
+        "myproject/settings.py"
+      ]
+    },
+    {
+      "id": 14,
+      "task": "R-09: Load SECRET_KEY, DEBUG, and ALLOWED_HOSTS from environment variables in settings.py; set corresponding env vars in docker-compose.yml for the development environment",
+      "status": "pending",
+      "file_targets": [
+        "myproject/settings.py",
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "id": 15,
+      "task": "R-10: Add authentication to the user_lookup endpoint — restrict to is_staff users via @login_required + staff check, or protect with a shared X-Internal-Token secret header; alternatively, eliminate the endpoint by embedding username in the JSONL payload at write time",
+      "status": "pending",
+      "file_targets": [
+        "orders/views.py",
+        "orders/urls.py"
+      ]
     }
   ]
 }
