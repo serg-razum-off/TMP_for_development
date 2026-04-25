@@ -49,7 +49,7 @@
     {
       "id": 6,
       "task": "R-01: Fix temp file write logic in process_mobile_orders — write errored records back to temp file so they are retried on the next beat cycle (Option A: clear on success, keep failures for retry)",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "orders/tasks.py"
       ]
@@ -57,7 +57,7 @@
     {
       "id": 7,
       "task": "R-02: Fix wrong field names in UserMessage.objects.create inside tasks.py — replace message= with message_body= and remove non-existent is_error= argument; add is_error BooleanField to UserMessage model if the flag is required",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "orders/tasks.py",
         "orders/models.py"
@@ -66,7 +66,7 @@
     {
       "id": 8,
       "task": "R-03: Replace fragile 'record' in locals() guard in tasks.py error handler — split except clause into separate json.JSONDecodeError and (KeyError, ValidationError) branches",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "orders/tasks.py"
       ]
@@ -74,7 +74,7 @@
     {
       "id": 9,
       "task": "R-04: Replace naive datetime.now() with datetime.now(timezone.utc) in streaming_server/main.py to match Django UTC-aware timestamps",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "streaming_server/main.py"
       ]
@@ -82,7 +82,7 @@
     {
       "id": 10,
       "task": "R-05: Replace bare except Exception in streaming_server/main.py with specific OSError handling and proper logger.error() call; let unexpected exceptions propagate for full tracebacks",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "streaming_server/main.py"
       ]

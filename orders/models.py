@@ -103,6 +103,7 @@ class UserMessage(models.Model):
         Order, related_name="messages", on_delete=models.CASCADE, null=True, blank=True
     )
     message_body = models.TextField()
+    is_error = models.BooleanField(default=False)
     is_read = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
