@@ -1,22 +1,15 @@
 import time
 import uuid
+import logging
 from typing import Callable
 
 from django.http import HttpRequest, HttpResponse
 from django.utils.deprecation import MiddlewareMixin
 
 
-class SimpleLoggingMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        print(f"Request path: {request.path}")
-        response = self.get_response(request)
-        return response
-
-
 # SR[20260322]: custom middleware to monitor requests performance
+logger = logging.getLogger("orders.middleware")
+
 class RequestTelemetryMiddleware:
     """
     Middleware to inject a unique Request-ID and measure execution performance.
@@ -47,7 +40,7 @@ class RequestTelemetryMiddleware:
         response["X-Execution-Time-Seconds"] = f"{duration:.4f}"
 
         # Print to console
-        print(
+        logger.info(
             f">>: [{request.request_id}] {request.method} {request.path} - {duration:.4f}s"
         )
 

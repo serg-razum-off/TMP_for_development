@@ -6,6 +6,8 @@ from django.views.generic import (
     DeleteView,
     TemplateView,
 )
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.urls import reverse_lazy
@@ -17,6 +19,20 @@ from django.contrib.auth.models import User
 from django.views.decorators.http import require_http_methods
 from .models import Order, Inventory, UserMessage
 from .forms import OrderForm, OrderItemFormSet
+
+
+
+
+
+
+
+
+
+
+class OrderPriceMixin:
+    def _get_product_prices_data(self) -> dict:
+        """Generates a dictionary of product IDs and their prices for client-side total calculation."""
+        return {item.id: float(item.price) for item in Inventory.objects.all()}
 
 
 class OrderListView(LoginRequiredMixin, ListView):
@@ -59,7 +75,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         return queryset
 
 
-class OrderCreateView(LoginRequiredMixin, CreateView):
+class OrderCreateView(LoginRequiredMixin, CreateView, OrderPriceMixin):
     model = Order
     form_class = OrderForm
     template_name = "orders/order_form.html"
@@ -69,10 +85,6 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs["request"] = self.request
         return kwargs
-
-    def _get_product_prices_data(self) -> dict:
-        """Generates a dictionary of product IDs and their prices for client-side total calculation."""
-        return {item.id: float(item.price) for item in Inventory.objects.all()}
 
     def get_initial(self):
         initial = super().get_initial()
@@ -112,7 +124,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class OrderUpdateView(LoginRequiredMixin, UpdateView):
+class OrderUpdateView(LoginRequiredMixin, UpdateView, OrderPriceMixin):
     model = Order
     form_class = OrderForm
     template_name = "orders/order_form.html"
@@ -129,9 +141,53 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
             queryset = queryset.filter(user=self.request.user)
         return queryset
 
-    def _get_product_prices_data(self) -> dict:
-        """Generates a dictionary of product IDs and their prices for client-side total calculation."""
-        return {item.id: float(item.price) for item in Inventory.objects.all()}
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if "items" not in data:
+            if self.request.POST:
+                data["items"] = OrderItemFormSet(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                data["items"] = OrderItemFormSet(instance=self.object)
+        data["product_prices"] = self._get_product_prices_data()
+        return data
+
+    def form_valid(self, form):
+        items = OrderItemFormSet(self.request.POST, instance=self.object)
+
+        if not items.is_valid():
+            return self.render_to_response(
+                self.get_context_data(form=form, items=items)
+            )
+
+        with transaction.atomic():
+            self.object = form.save()
+            items.save()
+            self.object.recalculate_total()
+
+        from django.http import HttpResponseRedirect
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+
+class OrderUpdateView(LoginRequiredMixin, UpdateView, OrderPriceMixin):
+    model = Order
+    form_class = OrderForm
+    template_name = "orders/order_form.html"
+    success_url = reverse_lazy("order_list")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        return kwargs
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(user=self.request.user)
+        return queryset
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -164,6 +220,7 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class OrderDeleteView(LoginRequiredMixin, DeleteView):
+
     model = Order
     template_name = "orders/order_confirm_delete.html"
     success_url = reverse_lazy("order_list")
@@ -219,12 +276,20 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
         return redirect(success_url)
 
 
-@require_http_methods(["GET"])
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
+# ... (existing imports)
+
+@login_required
 def user_lookup(request):
     """
     Lookup users by their IDs, used for mobile order streaming integration.
-    Internal API endpoint - no authentication required for Celery task access.
+    Internal API endpoint - restricted to staff.
     """
+    if not request.user.is_staff:
+        return JsonResponse({"error": "Forbidden"}, status=403)
+
     user_ids = request.GET.get("user_ids", "").split(",")
     try:
         user_ids = list(map(int, user_ids))

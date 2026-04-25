@@ -11,15 +11,9 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
 
-SECRET_KEY = "django-insecure-teaching-key"
-DEBUG = True
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "django_app",
-    "django_app:8000",
-    "*",
-]  # Allow development and Docker service names
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-teaching-key")
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,django_app,django_app:8000,*").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -95,6 +89,11 @@ LOGGING = {
     },
     "loggers": {
         "orders.tasks": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "orders.middleware": {
             "handlers": ["console"],
             "level": "INFO",
             "propagate": True,
