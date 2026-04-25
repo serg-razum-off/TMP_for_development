@@ -115,7 +115,7 @@
     {
       "id": 14,
       "task": "R-09: Load SECRET_KEY, DEBUG, and ALLOWED_HOSTS from environment variables in settings.py; set corresponding env vars in docker-compose.yml for the development environment",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "myproject/settings.py",
         "docker-compose.yml"
@@ -124,14 +124,11 @@
     {
       "id": 15,
       "task": "R-10: Add authentication to the user_lookup endpoint — restrict to is_staff users via @login_required + staff check, or protect with a shared X-Internal-Token secret header; alternatively, eliminate the endpoint by embedding username in the JSONL payload at write time",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "orders/views.py",
         "orders/urls.py"
       ]
     }
-  ]
-}
-
   ]
 }
