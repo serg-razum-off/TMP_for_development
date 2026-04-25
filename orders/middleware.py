@@ -4,7 +4,6 @@ import logging
 from typing import Callable
 
 from django.http import HttpRequest, HttpResponse
-from django.utils.deprecation import MiddlewareMixin
 
 
 # SR[20260322]: custom middleware to monitor requests performance
@@ -39,9 +38,10 @@ class RequestTelemetryMiddleware:
         response["X-Request-ID"] = request.request_id
         response["X-Execution-Time-Seconds"] = f"{duration:.4f}"
 
-        # Print to console
+        # Log the request telemetry
         logger.info(
             f">>: [{request.request_id}] {request.method} {request.path} - {duration:.4f}s"
         )
 
         return response
+

@@ -90,7 +90,7 @@
     {
       "id": 11,
       "task": "R-06: Extract duplicated _get_product_prices_data method from OrderCreateView and OrderUpdateView into a shared OrderPriceMixin or module-level helper function",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "orders/views.py"
       ]
@@ -98,7 +98,7 @@
     {
       "id": 12,
       "task": "R-07: Delete dead SimpleLoggingMiddleware class from orders/middleware.py — it is never registered and fully superseded by RequestTelemetryMiddleware",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "orders/middleware.py"
       ]

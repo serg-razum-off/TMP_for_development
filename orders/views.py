@@ -1,3 +1,4 @@
+from __future__ import annotations
 from django.views.generic import (
     ListView,
     DetailView,
@@ -170,53 +171,6 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView, OrderPriceMixin):
 
         return HttpResponseRedirect(self.get_success_url())
 
-
-
-class OrderUpdateView(LoginRequiredMixin, UpdateView, OrderPriceMixin):
-    model = Order
-    form_class = OrderForm
-    template_name = "orders/order_form.html"
-    success_url = reverse_lazy("order_list")
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["request"] = self.request
-        return kwargs
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if not self.request.user.is_staff:
-            queryset = queryset.filter(user=self.request.user)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        if "items" not in data:
-            if self.request.POST:
-                data["items"] = OrderItemFormSet(
-                    self.request.POST, instance=self.object
-                )
-            else:
-                data["items"] = OrderItemFormSet(instance=self.object)
-        data["product_prices"] = self._get_product_prices_data()
-        return data
-
-    def form_valid(self, form):
-        items = OrderItemFormSet(self.request.POST, instance=self.object)
-
-        if not items.is_valid():
-            return self.render_to_response(
-                self.get_context_data(form=form, items=items)
-            )
-
-        with transaction.atomic():
-            self.object = form.save()
-            items.save()
-            self.object.recalculate_total()
-
-        from django.http import HttpResponseRedirect
-
-        return HttpResponseRedirect(self.get_success_url())
 
 
 class OrderDeleteView(LoginRequiredMixin, DeleteView):
