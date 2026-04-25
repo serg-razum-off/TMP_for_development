@@ -8,8 +8,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Ensure the streaming directory exists for storage
-RUN mkdir -p /app/orders/streaming
+# Ensure the streaming directory exists and is owned by the user
+RUN mkdir -p /app/orders/streaming && \
+    useradd -m appuser && \
+    chown -R appuser:appuser /app
+
+USER appuser
 
 # Expose port 8001 (to avoid conflict with Django's 8000)
 EXPOSE 8001

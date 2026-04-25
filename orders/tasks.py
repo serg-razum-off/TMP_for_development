@@ -27,7 +27,7 @@ def process_mobile_orders(self):
     temp_file = tempfile.NamedTemporaryFile(
         mode="w", delete=False, dir=os.path.dirname(jsonl_path)
     )
-    
+
     try:
         with open(jsonl_path, "r") as file:
             for record_str in file:
@@ -37,7 +37,8 @@ def process_mobile_orders(self):
                     # Generate dynamic title with created_by_id --> user_id pattern
                     created_by_id = record["created_by_id"]
                     user_id = record["user_id"]
-                    title = f"New order created: {created_by_id} --> {user_id} {datetime.now(timezone.utc).isoformat()}"
+                    title = f"AUTO: [{created_by_id} --> {user_id}] {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S %Z')}"
+                    # .isoformat()}"
 
                     # Create order
                     Order.objects.create(
@@ -55,9 +56,9 @@ def process_mobile_orders(self):
 
                     # Create user message for failure
                     UserMessage.objects.create(
-                        user_id=record.get(
-                            "created_by_id", 1
-                        ) if 'record' in locals() else 1,
+                        user_id=record.get("created_by_id", 1)
+                        if "record" in locals()
+                        else 1,
                         message=f"Failed to process mobile order: {str(e)}",
                         is_error=True,
                     )
@@ -66,17 +67,17 @@ def process_mobile_orders(self):
                     # but typical optimization is to keep only what wasn't processed.
                     # Original logic: if record not in processed_records and record not in errored_records: write.
                     # This means processed and errored are REMOVED.
-        
+
         # In the original code, processed and errored records were both removed from the file.
         # To mimic this with line-by-line: we simply don't write them to the temp file.
         # Since we are reading and processing in one pass, we just don't write successful or errored ones.
-        # Actually, the original code reads all lines, then filters. 
+        # Actually, the original code reads all lines, then filters.
         # If we want to remove processed and errored, we write nothing.
         # Wait, if we remove everything that was either processed or errored, the file becomes empty?
         # Let's re-read original logic:
         # if record not in processed_records and record not in errored_records: file.write(record)
         # This means it removes everything it attempted to process.
-        
+
         os.replace(temp_file.name, jsonl_path)
     finally:
         temp_file.close()
@@ -85,8 +86,7 @@ def process_mobile_orders(self):
 
     # Log results
     logger.info(
-        f"Processed {processed_count} records, "
-        f"encountered {errored_count} errors"
+        f"Processed {processed_count} records, encountered {errored_count} errors"
     )
 
     return processed_count

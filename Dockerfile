@@ -15,6 +15,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . /app/
 
+# Create a non-root user and set ownership
+RUN useradd -m appuser && chown -R appuser:appuser /app
+
+USER appuser
+
 EXPOSE 8000
 
 # Default command for development

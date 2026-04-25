@@ -2,6 +2,7 @@ services:
   web:
     build: .
     container_name: django_app
+    user: "1000:1000"
     volumes:
       - .:/app
     ports:
@@ -18,10 +19,11 @@ services:
   streaming_api:
     build:
       context: .
-      dockerfile: orders/streaming/Dockerfile
+      dockerfile: streaming_server/Dockerfile
     container_name: streaming_api
+    user: "1000:1000"
     volumes:
-      - ./orders/streaming:/app
+      - ./streaming_server:/app
     ports:
       - "8002:8001"
     environment:
@@ -36,6 +38,7 @@ services:
   celery_worker:
     build: .
     container_name: celery_worker
+    user: "1000:1000"
     command: celery -A myproject worker --loglevel=info
     volumes:
       - .:/app
@@ -49,6 +52,7 @@ services:
   celery_beat:
     build: .
     container_name: celery_beat
+    user: "1000:1000"
     command: celery -A myproject beat --loglevel=info
     volumes:
       - .:/app

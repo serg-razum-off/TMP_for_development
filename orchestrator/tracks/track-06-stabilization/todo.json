@@ -35,6 +35,16 @@
       "file_targets": [
         "orders/tasks.py"
       ]
+    },
+    {
+      "id": 5,
+      "task": "Resolve PermissionError by synchronizing Docker user with host UID/GID",
+      "status": "done",
+      "file_targets": [
+        "docker-compose.yml",
+        "streaming_server/main.py",
+        "orders/tasks.py"
+      ]
     }
   ]
 }
