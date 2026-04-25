@@ -11,9 +11,9 @@ services:
       - PYTHONUNBUFFERED=1
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - SECRET_KEY=django-insecure-teaching-key
-      - DEBUG=True
-      - ALLOWED_HOSTS=localhost,127.0.0.1,django_app,django_app:8000,*
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-teaching-key}
+      - DEBUG=${DEBUG:-True}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,django_app,django_app:8000,*}
     depends_on:
       - redis
     stdin_open: true

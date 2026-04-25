@@ -106,7 +106,7 @@
     {
       "id": 13,
       "task": "R-08: Replace print() with logger.info() in RequestTelemetryMiddleware.__call__; add orders.middleware logger to LOGGING in settings.py",
-      "status": "pending",
+      "status": "done",
       "file_targets": [
         "orders/middleware.py",
         "myproject/settings.py"
@@ -130,5 +130,8 @@
         "orders/urls.py"
       ]
     }
+  ]
+}
+
   ]
 }

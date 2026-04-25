@@ -244,11 +244,18 @@ def user_lookup(request):
     if not request.user.is_staff:
         return JsonResponse({"error": "Forbidden"}, status=403)
 
-    user_ids = request.GET.get("user_ids", "").split(",")
+    user_ids_str = request.GET.get("user_ids", "")
+    if not user_ids_str:
+        return JsonResponse({}, status=200)
+
+    user_ids = user_ids_str.split(",")
     try:
-        user_ids = list(map(int, user_ids))
+        user_ids = [int(uid) for uid in user_ids if uid.strip()]
     except ValueError:
         return JsonResponse({"error": "Invalid user IDs"}, status=400)
+
+    if not user_ids:
+        return JsonResponse({}, status=200)
 
     # Fetch usernames for given user IDs
     users = User.objects.filter(id__in=user_ids).values("id", "username")
